@@ -1,0 +1,40 @@
+/* =========================================================
+   A11Y AUDITOR — Headings: árbol visual en el panel
+   ========================================================= */
+
+.a11y-heading-tree {
+  padding: 8px 16px;
+}
+
+.a11y-heading-node {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 0;
+  font-size: 12px;
+  color: #d1d5db;
+}
+
+.a11y-heading-level {
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 10px;
+  color: #7c85ff;
+  width: 24px;
+}
+
+.a11y-heading-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+}
+
+.a11y-heading-node.skip-error .a11y-heading-level {
+  color: #f87171;
+}
+
+.a11y-heading-node.empty-error .a11y-heading-text {
+  color: #f87171;
+  font-style: italic;
+}

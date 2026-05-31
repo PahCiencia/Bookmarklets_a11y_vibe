@@ -1,0 +1,14 @@
+/* =========================================================
+   A11Y AUDITOR — Images: sin estilos específicos adicionales
+   ========================================================= */
+
+/* Preview de imagen en los badges (para badge "sin alt") */
+.a11y-img-thumb {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 3px;
+  vertical-align: middle;
+  border: 1px solid #2a2f45;
+  margin-right: 4px;
+}

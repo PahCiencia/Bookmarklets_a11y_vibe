@@ -1,0 +1,27 @@
+/* =========================================================
+   A11Y AUDITOR — Landmarks: colores por región
+   ========================================================= */
+
+/* Leyenda de colores en el panel */
+.a11y-landmark-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px 16px;
+  border-bottom: 1px solid #1e2130;
+}
+
+.a11y-landmark-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  color: #9ca3af;
+}
+
+.a11y-landmark-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
