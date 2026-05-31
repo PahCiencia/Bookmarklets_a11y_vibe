@@ -1,981 +1,147 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bookmarklets de Auditoría de Accesibilidad Web — WCAG 2.2</title>
-    <meta name="description" content="8 bookmarklets accesibles para auditar páginas web. Análisis visual + JSON para LLMs. Basado en WCAG 2.2.">
-    <meta name="theme-color" content="#0d47a1">
-    
-    <style>
-        /* ========== CUSTOM FONTS ========== */
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Atkinson+Hyperlegible:wght@400;700&display=swap');
-
-        /* ========== CSS VARIABLES ========== */
-        :root {
-            /* Colors */
-            --color-primary: #0d47a1;
-            --color-primary-light: #1565c0;
-            --color-accent: #ff6f00;
-            --color-accent-light: #ff9800;
-            --color-success: #2e7d32;
-            --color-warning: #f57c00;
-            --color-error: #c62828;
-            --color-info: #01579b;
-            
-            /* Backgrounds */
-            --bg-base: #fcf9f9;
-            --bg-light: #f5f7fa;
-            --bg-alt: #eeeff2;
-            
-            /* Text */
-            --text-primary: #0f1419;
-            --text-secondary: #2a7ca1;
-            --text-light: #78909c;
-            
-            /* Spacing */
-            --sp-xs: 10px;
-            --sp-sm: 12px;
-            --sp-md: 16px;
-            --sp-lg: 24px;
-            --sp-xl: 32px;
-            --sp-2xl: 48px;
-            
-            /* Shadows */
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
-            --shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
-            --shadow-xl: 0 12px 32px rgba(0,0,0,0.18);
-            
-            /* Borders */
-            --border-radius-sm: 4px;
-            --border-radius-md: 8px;
-            --border-radius-lg: 12px;
-        }
-
-        /* ========== RESET ========== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: 'Atkinson Hyperlegible', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            font-size: 16px;
-            line-height: 1.6;
-            color: var(--text-primary);
-            background: linear-gradient(135deg, var(--bg-light) 0%, #e8eef5 100%);
-            min-height: 100vh;
-        }
-
-        /* ========== TYPOGRAPHY ========== */
-        h1 {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 700;
-            line-height: 1.2;
-            letter-spacing: -0.02em;
-        }
-
-        h2 {
-            font-size: clamp(1.75rem, 4vw, 2.5rem);
-            font-weight: 700;
-            line-height: 1.3;
-            letter-spacing: -0.01em;
-        }
-
-        h3 {
-            font-size: clamp(1.25rem, 3vw, 1.75rem);
-            font-weight: 600;
-            line-height: 1.4;
-        }
-
-        p {
-            font-weight: 400;
-            color: var(--text-secondary);
-        }
-
-        a {
-            color: var(--color-primary);
-            text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: border-color 200ms ease;
-        }
-
-        a:hover,
-        a:focus-visible {
-            border-bottom-color: currentColor;
-        }
-
-        code {
-            font-family: 'JetBrains Mono', monospace;
-            background: var(--bg-alt);
-            padding: 2px 6px;
-            border-radius: var(--border-radius-sm);
-            font-size: 0.9em;
-            color: var(--color-error);
-        }
-
-        /* ========== LAYOUT ========== */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 var(--sp-md);
-        }
-
-        main {
-            padding: var(--sp-2xl) 0;
-        }
-
-        section {
-            margin-bottom: var(--sp-2xl);
-        }
-
-        /* ========== HEADER ========== */
-        header {
-            background: var(--bg-base);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            position: relative;
-            overflow: hidden;
-        }
-
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
-        }
-
-        .header-content {
-            padding: var(--sp-xl) 0;
-            animation: slideDown 600ms ease-out;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .header-title {
-            display: flex;
-            align-items: center;
-            gap: var(--sp-md);
-            margin-bottom: var(--sp-md);
-        }
-
-        .header-icon {
-            font-size: 2.5em;
-            animation: bounce 2s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-        }
-
-        .header-subtitle {
-            font-size: 1.1em;
-            color: var(--text-secondary);
-            margin-bottom: var(--sp-lg);
-            max-width: 600px;
-        }
-
-        .badges {
-            display: flex;
-            gap: var(--sp-sm);
-            flex-wrap: wrap;
-            margin-top: var(--sp-md);
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 4px 12px;
-            background: var(--bg-alt);
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 500;
-            color: var(--text-primary);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .badge.accent {
-            background: rgba(255, 111, 0, 0.1);
-            color: var(--color-accent);
-            border-color: var(--color-accent);
-        }
-
-        /* ========== GRID LAYOUT ========== */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: var(--sp-lg);
-        }
-
-        .grid-2 {
-            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-        }
-
-        @media (max-width: 900px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ========== CARDS ========== */
-        .card {
-            background: var(--bg-base);
-            border-radius: var(--border-radius-lg);
-            padding: var(--sp-lg);
-            box-shadow: var(--shadow-md);
-            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 300ms ease;
-        }
-
-        .card:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-4px);
-        }
-
-        .card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .card-icon {
-            font-size: 2.5em;
-            margin-bottom: var(--sp-md);
-            display: block;
-        }
-
-        .card-title {
-            margin-bottom: var(--sp-sm);
-            color: #d095fb; 
-        }
-
-        .card-subtitle {
-            font-size: 0.9em;
-            color: var(--text-light);
-            margin-bottom: var(--sp-md);
-        }
-
-        .card-description {
-            font-size: 0.95em;
-            line-height: 1.7;
-            margin-bottom: var(--sp-lg);
-            color: var(--text-secondary);
-        }
-
-        .card-features {
-            list-style: none;
-            margin-bottom: var(--sp-lg);
-        }
-
-        .card-features li {
-            padding: 6px 0;
-            font-size: 0.9em;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .card-features li::before {
-            content: '✓';
-            color: var(--color-success);
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-
-        /* ========== BUTTONS ========== */
-        .button {
-            display: inline-block;
-            padding: 12px 24px;
-            border: none;
-            border-radius: var(--border-radius-md);
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.95em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 200ms ease;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 300ms, height 300ms;
-        }
-
-        .button:active::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .button:focus-visible {
-            outline: 2px solid var(--color-primary);
-            outline-offset: 2px;
-        }
-
-        .button-primary {
-            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
-            color: white;
-            box-shadow: var(--shadow-md);
-        }
-
-        .button-primary:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
-        }
-
-        .button-secondary {
-            background: var(--bg-alt);
-            color: var(--color-primary);
-            border: 2px solid var(--color-primary);
-        }
-
-        .button-secondary:hover {
-            background: var(--color-primary);
-            color: white;
-        }
-
-        .button-small {
-            padding: 10px 16px;
-            font-size: 0.85em;
-        }
-
-        .copy-success {
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--color-success);
-            color: white;
-            padding: 8px 16px;
-            border-radius: var(--border-radius-md);
-            font-size: 0.85em;
-            font-weight: 600;
-            white-space: nowrap;
-            opacity: 0;
-            transition: all 200ms ease;
-            pointer-events: none;
-        }
-
-        .copy-success.show {
-            opacity: 1;
-            top: -45px;
-        }
-
-        /* ========== SECTIONS ========== */
-        .hero {
-            text-align: center;
-            padding: var(--sp-2xl) 0;
-            margin-bottom: var(--sp-2xl);
-        }
-
-        .installation-steps {
-            background: var(--bg-base);
-            border-radius: var(--border-radius-lg);
-            padding: var(--sp-xl);
-            margin-bottom: var(--sp-2xl);
-            box-shadow: var(--shadow-md);
-        }
-
-        .step {
-            display: grid;
-            grid-template-columns: 60px 1fr;
-            gap: var(--sp-lg);
-            margin-bottom: var(--sp-xl);
-            align-items: start;
-        }
-
-        .step:last-child {
-            margin-bottom: 0;
-        }
-
-        .step-number {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5em;
-            font-weight: 700;
-            flex-shrink: 0;
-            box-shadow: var(--shadow-md);
-        }
-
-        .step-content h3 {
-            margin-bottom: var(--sp-sm);
-        }
-
-        .step-content p {
-            margin-bottom: var(--sp-sm);
-            font-size: 0.95em;
-        }
-
-        .code-block {
-            background: var(--bg-alt);
-            border-left: 4px solid var(--color-accent);
-            padding: var(--sp-md);
-            border-radius: var(--border-radius-sm);
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85em;
-            overflow-x: auto;
-            margin-top: var(--sp-sm);
-        }
-
-        /* ========== FEATURES SECTION ========== */
-        .features-highlight {
-            background: linear-gradient(135deg, rgba(13, 71, 161, 0.08) 0%, rgba(255, 111, 0, 0.08) 100%);
-            border-radius: var(--border-radius-lg);
-            padding: var(--sp-xl);
-            margin-bottom: var(--sp-2xl);
-            border: 1px solid rgba(13, 71, 161, 0.1);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: var(--sp-lg);
-            margin-top: var(--sp-lg);
-        }
-
-        .feature-item {
-            display: flex;
-            gap: var(--sp-md);
-            align-items: flex-start;
-        }
-
-        .feature-icon {
-            font-size: 1.5em;
-            flex-shrink: 0;
-            margin-top: 4px;
-        }
-
-        .feature-text h4 {
-            font-size: 0.95em;
-            margin-bottom: 4px;
-        }
-
-        .feature-text p {
-            font-size: 0.85em;
-        }
-
-        /* ========== FOOTER ========== */
-        footer {
-            background: var(--bg-base);
-            border-top: 1px solid rgba(0, 0, 0, 0.06);
-            padding: var(--sp-2xl) 0;
-            margin-top: var(--sp-2xl);
-            text-align: center;
-        }
-
-        .footer-content p {
-            margin-bottom: var(--sp-md);
-            font-size: 0.9em;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: var(--sp-lg);
-            margin-top: var(--sp-lg);
-            flex-wrap: wrap;
-        }
-
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 var(--sp-md);
-            }
-
-            .header-title {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .grid {
-                grid-template-columns: 1fr;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .step {
-                grid-template-columns: 1fr;
-            }
-
-            .step-number {
-                width: 48px;
-                height: 48px;
-                font-size: 1.2em;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                gap: var(--sp-md);
-            }
-        }
-
-        /* ========== ACCESSIBILITY ========== */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-base: #121212;
-                --bg-light: #1e1e1e;
-                --bg-alt: #2a2a2a;
-                --text-primary: #f5f5f5;
-                --text-secondary: #b0b0b0;
-                --text-light: #808080;
-            }
-
-            body {
-                background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
-            }
-
-            a {
-                color: #64b5f6;
-            }
-
-            .badge {
-                background: rgba(255, 255, 255, 0.08);
-                color: var(--text-primary);
-            }
-        }
-
-        /* ========== PRINT ========== */
-        @media print {
-            body {
-                background: white;
-            }
-
-            .button {
-                display: none;
-            }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A11Y Auditor — Kit de Bookmarklets de Accesibilidad</title>
+  <meta name="description" content="Colección de bookmarklets para auditar accesibilidad web: headings, contraste, imágenes, formularios y más." />
+  <link rel="stylesheet" href="page.css" />
 </head>
 <body>
-    <!-- HEADER -->
-    <header role="banner">
-        <div class="container">
-            <div class="header-content">
-                <div class="header-title">
-                    <span class="header-icon">🔍</span>
-                    <div>
-                        <h1>Auditoría de Accesibilidad Web</h1>
-                    </div>
-                </div>
-                <p class="header-subtitle">8 bookmarklets para testear y mejorar la accesibilidad de páginas web. Análisis visual + JSON para LLMs.</p>
-                <div class="badges">
-                    <span class="badge">WCAG 2.2</span>
-                    <span class="badge accent">JSON Output</span>
-                    <span class="badge">Sin dependencias</span>
-                    <span class="badge">Accesible</span>
-                </div>
-            </div>
+
+  <!-- ============ SKIP LINK ============ -->
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" role="banner">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">◈</span>
+        <div>
+          <span class="brand-name">A11Y Auditor</span>
+          <span class="brand-tagline">Kit de bookmarklets de accesibilidad</span>
         </div>
-    </header>
+      </div>
+      <nav class="header-nav" aria-label="Navegación principal">
+        <a href="#como-usar">Cómo usar</a>
+        <a href="#bookmarklets">Herramientas</a>
+        <a href="#json-output">JSON para LLM</a>
+      </nav>
+    </div>
+  </header>
 
-    <!-- MAIN CONTENT -->
-    <main>
-        <div class="container">
-            <!-- HERO / INTRO -->
-            <section class="hero">
-                <h2 style="margin-bottom: var(--sp-lg);">¿Qué son estos bookmarklets?</h2>
-                <p style="font-size: 1.05em; max-width: 700px; margin: 0 auto;">
-                    Son pequeños scripts que instalas en tu navegador para analizar la accesibilidad de cualquier página web <strong>en tiempo real</strong>. 
-                    Obtén resultados visuales en la página + JSON estructurado para procesar con LLMs.
-                </p>
-            </section>
+  <!-- ============ HERO ============ -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Accesibilidad · WCAG 2.1</p>
+      <h1 id="hero-title">Audita cualquier<br /><em>página web</em><br />en un clic</h1>
+      <p class="hero-sub">
+        Abre una página, haz clic en el bookmarklet y obtén resultados visuales inmediatos
+        junto con un informe JSON listo para compartir con un LLM.
+      </p>
+      <a href="#como-usar" class="cta-btn">Ver instrucciones</a>
+    </div>
+    <div class="hero-deco" aria-hidden="true">
+      <div class="deco-circle c1"></div>
+      <div class="deco-circle c2"></div>
+      <div class="deco-grid"></div>
+    </div>
+  </section>
 
-            <!-- FEATURES HIGHLIGHT -->
-            <section class="features-highlight">
-                <h3 style="margin-bottom: var(--sp-lg);">✨ Características principales</h3>
-                <div class="features-grid">
-                    <div class="feature-item">
-                        <span class="feature-icon">🎨</span>
-                        <div class="feature-text">
-                            <h4>Panel Visual</h4>
-                            <p>Resultados en un panel flotante accesible sin interferir con la página</p>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">📊</span>
-                        <div class="feature-text">
-                            <h4>JSON Normalizado</h4>
-                            <p>Exporta resultados en JSON para procesar con IA/LLMs con 1 click</p>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">📚</span>
-                        <div class="feature-text">
-                            <h4>Recomendaciones WCAG</h4>
-                            <p>Cada problema incluye recomendación específica para arreglarlo</p>
-                        </div>
-                    </div>
-                    <div class="feature-item">
-                        <span class="feature-icon">⚡</span>
-                        <div class="feature-text">
-                            <h4>Instantáneo</h4>
-                            <p>Ejecuta en segundos, sin carga de dependencias pesadas</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+  <!-- ============ CÓMO USAR ============ -->
+  <section id="como-usar" class="how-section" aria-labelledby="how-title">
+    <div class="section-inner">
+      <h2 id="how-title">Cómo usar</h2>
+      <ol class="steps" role="list">
+        <li class="step">
+          <span class="step-num" aria-hidden="true">01</span>
+          <div>
+            <strong>Arrastra</strong> el bookmarklet que quieras a tu barra de favoritos del navegador.
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">02</span>
+          <div>
+            <strong>Navega</strong> a cualquier página web que quieras analizar.
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">03</span>
+          <div>
+            <strong>Haz clic</strong> en el bookmarklet. Aparecerá el panel lateral con los resultados.
+          </div>
+        </li>
+        <li class="step">
+          <span class="step-num" aria-hidden="true">04</span>
+          <div>
+            <strong>Pulsa "Copiar JSON"</strong> para obtener el informe completo y pegarlo en un LLM.
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
 
-            <!-- INSTALLATION STEPS -->
-            <section class="installation-steps">
-                <h2 style="margin-bottom: var(--sp-xl);">📚 Instalación en 4 pasos</h2>
-                
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Copia el código</h3>
-                        <p>Elige un bookmarklet abajo y haz clic en <strong>"Copiar Bookmarklet"</strong>. Se copiará automáticamente al portapapeles.</p>
-                    </div>
-                </div>
+  <!-- ============ BOOKMARKLETS ============ -->
+  <main id="main-content">
+    <section id="bookmarklets" class="tools-section" aria-labelledby="tools-title">
+      <div class="section-inner">
+        <h2 id="tools-title">Herramientas</h2>
+        <p class="section-sub">Arrastra cualquier bookmarklet a tu barra de favoritos para instalarlo.</p>
 
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>Abre marcadores de tu navegador</h3>
-                        <p>Abre la barra de marcadores:</p>
-                        <div class="code-block">Chrome/Edge: Ctrl+Shift+B (Cmd+Shift+B en Mac)
-Firefox: Ctrl+Shift+B
-Safari: Cmd+Option+B</div>
-                    </div>
-                </div>
-
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Crea un nuevo marcador</h3>
-                        <p>Click derecho en la barra → <strong>"Agregar página"</strong> o <strong>"Nuevo marcador"</strong></p>
-                        <p><strong>Nombre:</strong> "A11y - Headings" (o similar)</p>
-                        <p><strong>URL:</strong> Pega el código que copiaste en el paso 1</p>
-                    </div>
-                </div>
-
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3>¡Úsalo!</h3>
-                        <p>Navega a cualquier página web y haz clic en tu nuevo bookmarklet. ¡Aparecerá el panel de análisis!</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- BOOKMARKLETS GRID -->
-            <section>
-                <h2 style="margin-bottom: var(--sp-lg); text-align: center;">Los 8 Bookmarklets</h2>
-                
-                <!-- CORE SECTION -->
-                <h3 style="margin-top: var(--sp-2xl); margin-bottom: var(--sp-lg); color: var(--color-primary);">Core (Esenciales)</h3>
-                <div class="grid">
-                    <!-- 1. Headings -->
-                    <article class="card">
-                        <span class="card-icon">📋</span>
-                        <h3 class="card-title">Analizar Headings</h3>
-                        <span class="card-subtitle">Estructura de títulos</span>
-                        <p class="card-description">Valida la estructura jerárquica de headings (h1-h6). Detecta h1 único, saltos de nivel, headings vacíos.</p>
-                        <ul class="card-features">
-                            <li>H1 único detectado</li>
-                            <li>Saltos de nivel (H1→H3)</li>
-                            <li>Headings vacíos</li>
-                            <li>Orden jerárquico</li>
-                        </ul>
-                        <button class="button button-primary" onclick="copyCode(event, 'headings')">
-                            📋 Copiar Bookmarklet
-                        </button>
-                        <div class="copy-success"></div>
-                    </article>
-
-                    <!-- 2. Images -->
-                    <article class="card">
-                        <span class="card-icon">🖼️</span>
-                        <h3 class="card-title">Analizar Imágenes</h3>
-                        <span class="card-subtitle">Textos alternativos</span>
-                        <p class="card-description">Detecta imágenes sin alt, alt vacío o genérico. Valida la calidad y relevancia del texto alternativo.</p>
-                        <ul class="card-features">
-                            <li>Alt presente/ausente</li>
-                            <li>Alt genérico o débil</li>
-                            <li>Nombres de archivo</li>
-                            <li>Contexto visual</li>
-                        </ul>
-                        <button class="button button-primary" onclick="copyCode(event, 'images')">
-                            📋 Copiar Bookmarklet
-                        </button>
-                        <div class="copy-success"></div>
-                    </article>
-
-                    <!-- 3. Contrast -->
-                    <article class="card">
-                        <span class="card-icon">🎨</span>
-                        <h3 class="card-title">Analizar Contraste</h3>
-                        <span class="card-subtitle">Ratios de color WCAG</span>
-                        <p class="card-description">Valida el contraste entre texto y fondo. Verifica cumplimiento WCAG AA (4.5:1) y AAA (7:1).</p>
-                        <ul class="card-features">
-                            <li>Ratios de contraste</li>
-                            <li>Cumplimiento AA/AAA</li>
-                            <li>Texto grande detectado</li>
-                            <li>Elementos resaltados</li>
-                        </ul>
-                        <button class="button button-primary" onclick="copyCode(event, 'contrast')">
-                            📋 Copiar Bookmarklet
-                        </button>
-                        <div class="copy-success"></div>
-                    </article>
-
-                    <!-- 4. Axe-Core -->
-                    <article class="card">
-                        <span class="card-icon">⚙️</span>
-                        <h3 class="card-title">Auditoría Axe-Core</h3>
-                        <span class="card-subtitle">Análisis automático</span>
-                        <p class="card-description">Ejecuta análisis automático completo usando axe-core. Detecta 50+ violaciones WCAG 2.2 AA.</p>
-                        <ul class="card-features">
-                            <li>50+ reglas automáticas</li>
-                            <li>Violaciones WCAG</li>
-                            <li>Problemas incompletos</li>
-                            <li>Elementos que pasan</li>
-                        </ul>
-                        <button class="button button-primary" onclick="copyCode(event, 'axe-core')">
-                            📋 Copiar Bookmarklet
-                        </button>
-                        <div class="copy-success"></div>
-                    </article>
-                </div>
-
-                <!-- ADDITIONAL SECTION -->
-                <h3 style="margin-top: var(--sp-2xl); margin-bottom: var(--sp-lg); color: var(--color-accent);">Adicionales (Especializados)</h3>
-                <div class="grid">
-                    <!-- 5. Alt Text Analysis -->
-                    <article class="card">
-                        <span class="card-icon">📝</span>
-                        <h3 class="card-title">Análisis de Texto Alt</h3>
-                        <span class="card-subtitle">Calidad profunda</span>
-                        <p class="card-description">Análisis profundo de la calidad del texto alt en imágenes. Puntuación 0-100 por imagen con recomendaciones.</p>
-                        <ul class="card-features">
-                            <li>Puntuación 0-100</li>
-                            <li>Patrones débiles</li>
-                            <li>Longitud óptima</li>
-                            <li>Sugerencias mejora</li>
-                        </ul>
-                        <button class="button button-primary" onclick="copyCode(event, 'alt-text')">
-                            📋 Copiar Bookmarklet
-                        </button>
-                        <div class="copy-success"></div>
-                    </article>
-
-                    <!-- 6. Semantic HTML -->
-                    <article class="card">
-                        <span class="card-icon">🏗️</span>
-                        <h3 class="card-title">Análisis Semántica HTML</h3>
-                        <span class="card-subtitle">Estructura correcta</span>
-                        <p class="card-description">Valida el uso de elementos semánticos: nav, main, section, article, footer. Detecta divitis y estructura incorrecta.</p>
-                        <ul class="card-features">
-                            <li>Elementos semánticos</li>
-                            <li>Main único</li>
-                            <li>Estructura lógica</li>
-                            <li>Atributo lang</li>
-                        </ul>
-                        <button class="button button-primary" onclick="copyCode(event, 'semantics')">
-                            📋 Copiar Bookmarklet
-                        </button>
-                        <div class="copy-success"></div>
-                    </article>
-
-                    <!-- 7. Forms -->
-                    <article class="card">
-                        <span class="card-icon">📋</span>
-                        <h3 class="card-title">Análisis de Formularios</h3>
-                        <span class="card-subtitle">Labels y acceso</span>
-                        <p class="card-description">Valida que las labels estén asociadas correctamente a inputs. Verifica fieldsets, legends, y accesibilidad general.</p>
-                        <ul class="card-features">
-                            <li>Labels asociadas</li>
-                            <li>Relación for/id</li>
-                            <li>Fieldsets con legend</li>
-                            <li>Campos accesibles</li>
-                        </ul>
-                        <button class="button button-primary" onclick="copyCode(event, 'forms')">
-                            📋 Copiar Bookmarklet
-                        </button>
-                        <div class="copy-success"></div>
-                    </article>
-
-                    <!-- 8. Color Ratios WCAG -->
-                    <article class="card">
-                        <span class="card-icon">🎨</span>
-                        <h3 class="card-title">Ratios de Color WCAG</h3>
-                        <span class="card-subtitle">Análisis detallado</span>
-                        <p class="card-description">Análisis detallado y profesional de ratios de contraste. Tabla comparativa, breakdown AA/AAA, elementos problemáticos.</p>
-                        <ul class="card-features">
-                            <li>Ratios precisos</li>
-                            <li>Tabla comparativa</li>
-                            <li>WCAG AA/AAA</li>
-                            <li>Elementos fallidos</li>
-                        </ul>
-                        <button class="button button-primary" onclick="copyCode(event, 'color-ratios')">
-                            📋 Copiar Bookmarklet
-                        </button>
-                        <div class="copy-success"></div>
-                    </article>
-                </div>
-            </section>
-
-            <!-- WITH LLM SECTION -->
-            <section style="margin-top: var(--sp-2xl);">
-                <h2 style="margin-bottom: var(--sp-lg);">🤖 Usar con LLMs</h2>
-                <div class="card" style="background: linear-gradient(135deg, rgba(13, 71, 161, 0.04) 0%, rgba(255, 111, 0, 0.04) 100%);">
-                    <h3 style="color: var(--color-primary); margin-bottom: var(--sp-md);">Flujo típico</h3>
-                    <ol style="margin-left: var(--sp-lg); color: var(--text-secondary); line-height: 1.8;">
-                        <li><strong>Ejecutas bookmarklet</strong> en la página web que quieres auditar</li>
-                        <li><strong>Haces click</strong> en "Copiar JSON"</li>
-                        <li><strong>Pegas el JSON</strong> en tu LLM favorito (ChatGPT, Claude, etc.)</li>
-                        <li><strong>LLM genera</strong> código HTML/CSS corregido basado en los problemas</li>
-                        <li><strong>Implementas cambios</strong> en tu proyecto</li>
-                    </ol>
-                    
-                    <h3 style="color: var(--color-primary); margin-top: var(--sp-lg); margin-bottom: var(--sp-md);">Prompt ejemplo para LLM</h3>
-                    <div class="code-block" style="background: var(--bg-alt); border-left: 4px solid var(--color-accent);">Aquí está el resultado de un análisis de accesibilidad WCAG 2.2.
-Basándote en los problemas detectados, genera:
-
-1. Código HTML corregido
-2. Cambios CSS necesarios
-3. Explicación breve de por qué cada cambio mejora accesibilidad
-
-[PEGA EL JSON AQUÍ]</div>
-                </div>
-            </section>
+        <div id="tools-grid" class="tools-grid" role="list">
+          <!-- Renderizado por page.js a partir de bookmarklets-data.js -->
+          <p class="loading-msg" aria-live="polite">Cargando herramientas…</p>
         </div>
-    </main>
 
-    <!-- FOOTER -->
-    <footer role="contentinfo">
-        <div class="container">
-            <div class="footer-content">
-                <p><strong>Suite de Auditoría de Accesibilidad Web v1.0</strong></p>
-                <p style="color: var(--text-light);">Basado en estándares WCAG 2.2 Level AA</p>
-                <div class="footer-links">
-                    <a href="#" title="Documentación técnica">📚 Documentación</a>
-                    <a href="#" title="Referencia rápida">⚡ Quick Reference</a>
-                    <a href="#" title="WCAG 2.2 Specification">📖 WCAG 2.2</a>
-                </div>
-                <p style="font-size: 0.85em; color: var(--text-light); margin-top: var(--sp-lg);">
-                    Cada bookmarklet es completamente accesible, sin dependencias (excepto axe-core), y funciona offline.
-                </p>
-            </div>
+        <div class="fallback-msg" id="fallback-msg" hidden>
+          <p>⚠ No se encontraron los bookmarklets. Ejecuta primero <code>node build.js</code> desde la carpeta <code>bookmarklets/</code>.</p>
         </div>
-    </footer>
+      </div>
+    </section>
 
-    <!-- JAVASCRIPT -->
-    <script>
-        // Códigos de bookmarklets (placeholder - en producción se cargarían desde archivos)
-        const bookmarkletCodes = {
-            'headings': '(function(){alert("Bookmarklet de Headings")})();',
-            'images': '(function(){alert("Bookmarklet de Imágenes")})();',
-            'contrast': '(function(){alert("Bookmarklet de Contraste")})();',
-            'axe-core': '(function(){alert("Bookmarklet de Axe-Core")})();',
-            'alt-text': '(function(){alert("Bookmarklet de Texto Alt")})();',
-            'semantics': '(function(){alert("Bookmarklet de Semántica")})();',
-            'forms': '(function(){alert("Bookmarklet de Formularios")})();',
-            'color-ratios': '(function(){alert("Bookmarklet de Ratios Color")})();'
-        };
+    <!-- ============ JSON PARA LLM ============ -->
+    <section id="json-output" class="json-section" aria-labelledby="json-title">
+      <div class="section-inner">
+        <h2 id="json-title">Resultado JSON para LLM</h2>
+        <p>Cada bookmarklet devuelve un objeto JSON con este esquema. Cópialo y pégalo en tu LLM favorito para obtener recomendaciones de corrección.</p>
+        <figure>
+          <figcaption class="code-caption">Esquema del resultado JSON</figcaption>
+          <pre class="code-block"><code>{
+  "tool": "headings",
+  "url": "https://ejemplo.com",
+  "timestamp": "2026-03-07T12:00:00.000Z",
+  "summary": {
+    "errors": 2,
+    "warnings": 1,
+    "passes": 5,
+    "total": 8
+  },
+  "issues": [
+    {
+      "severity": "error",
+      "message": "Nivel saltado: H2 → H4",
+      "selector": "body > main > h4:nth-of-type(1)",
+      "element": "&lt;h4 class='subtitle'&gt;...&lt;/h4&gt;",
+      "wcag": "1.3.1"
+    }
+  ]
+}</code></pre>
+        </figure>
+      </div>
+    </section>
+  </main>
 
-        async function copyCode(event, bookmarkletName) {
-            const button = event.currentTarget;
-            const successMsg = button.nextElementSibling;
-            const code = bookmarkletCodes[bookmarkletName];
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-inner">
+      <p>A11Y Auditor — Herramienta interna de auditoría de accesibilidad</p>
+      <p class="footer-note">Basado en <a href="https://www.w3.org/WAI/standards-guidelines/wcag/" rel="noopener noreferrer" target="_blank">WCAG 2.1 (abre nueva pestaña)</a> · Usa axe-core de Deque Systems</p>
+    </div>
+  </footer>
 
-            try {
-                await navigator.clipboard.writeText(code);
-                
-                // Mostrar mensaje de éxito
-                successMsg.textContent = '✓ ¡Copiado! Pega en tu marcador';
-                successMsg.classList.add('show');
-                
-                // Cambiar texto del botón
-                const originalText = button.textContent;
-                button.textContent = '✓ Copiado';
-                
-                // Resetear después de 3 segundos
-                setTimeout(() => {
-                    successMsg.classList.remove('show');
-                    button.textContent = originalText;
-                }, 3000);
-            } catch (err) {
-                console.error('Error al copiar:', err);
-                alert('No se pudo copiar al portapapeles. Intenta manualmente.');
-            }
-        }
+  <!-- Data generada por build.js -->
+  <script src="bookmarklets-data.js"></script>
+  <script src="page.js"></script>
 
-        // Accesibilidad: Permitir Enter y Space en botones
-        document.querySelectorAll('button').forEach(button => {
-            button.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    this.click();
-                }
-            });
-        });
-
-        // Scroll smooth
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
-    </script>
 </body>
 </html>
