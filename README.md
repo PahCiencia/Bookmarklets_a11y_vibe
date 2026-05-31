@@ -1,312 +1,108 @@
-# 🎯 AUDITOR — Suite Completa de Auditoría de Accesibilidad Web
+# weAAAre - Curso de desarrollo accesible con IA
 
-[![GitHub](https://img.shields.io/badge/GitHub-Bookmarklets_a11y_vibe-blue?logo=github)](https://github.com/PahCiencia/Bookmarklets_a11y_vibe)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
-[![WCAG 2.2](https://img.shields.io/badge/WCAG-2.2-blue.svg)](https://www.w3.org/WAI/WCAG22/quickref/)
+Repositorio del curso de desarrollo accesible con IA en la plataforma [weAAAre](https://weaaare.com).
 
-> Suite completa de herramientas **accesibles** para auditar y mejorar la accesibilidad web según **WCAG 2.2**, diseñada para auditores, desarrolladores y usuarios de IA/LLMs.
+## Descripci�n
 
----
+Kit de **bookmarklets** para auditar la accesibilidad web ([WCAG 2.1](https://www.w3.org/WAI/standards-guidelines/wcag/)) de cualquier p�gina en tiempo real.
 
-## 📌 ¿Qué es AUDITOR?
+Ejecuta los an�lisis directamente desde tu navegador y obt�n:
 
-**AUDITOR** es un conjunto de **8 bookmarklets inteligentes** que te permiten:
+- **Panel visual** con errores, avisos y verificaciones correctas
+- **JSON exportable** para compartir resultados con un LLM
+- **Cero dependencias** (excepto axe-core, que se carga desde CDN)
 
-- ✅ **Auditar en tiempo real** cualquier página web sin instalación
-- 📊 **Generar reportes JSON** exportables para procesar con IA (ChatGPT, Claude, etc.)
-- 🎯 **Obtener recomendaciones** basadas en estándares WCAG 2.2 actualizados
-- ♿ **Interfaz totalmente accesible** — ¡la auditoría es accesible también!
-- 🚀 **Cero dependencias** — Solo copiar y pegar código en marcadores
-- 🌍 **Multiplataforma** — Chrome, Firefox, Safari, Edge
+Cada bookmarklet se especializa en un aspecto diferente de la accesibilidad:
 
----
+| Herramienta | Qu� analiza |
+|------------|-----------|
+| **Headings** | Jerarqu�a h1-h6, niveles saltados, headings vac�os, m�ltiples H1 |
+| **Axe-core** | Auditor�a completa WCAG 2.1 usando el motor de Deque |
+| **Im�genes** | Alt text ausente/vac�o/largo, SVGs sin nombre accesible |
+| **Contraste** | Ratio de colores (AA 4.5:1, AAA 7:1) |
+| **Links** | Texto gen�rico, enlaces sin destino, nuevas pesta�as sin aviso |
+| **Formularios** | Labels asociados, fieldsets, autocomplete, botones sin texto |
+| **Landmarks** | Regiones ARIA (main, nav, header), duplicados sin label |
 
-## 🌟 Los 8 Bookmarklets
-
-### Análisis Esencial (Core)
-
-| Icono | Nombre | Propósito |
-|-------|--------|----------|
-| 📋 | **Analizar Headings** | Valida estructura jerárquica h1-h6, detecta saltos |
-| 🖼️ | **Analizar Imágenes** | Detecta alt text faltante, vacío o genérico |
-| 🎨 | **Analizar Contraste** | Valida ratios de color (AA/AAA según WCAG) |
-| ⚙️ | **Auditoría Axe-Core** | Análisis automático completo con motor Axe |
-
-### Análisis Especializado (Avanzado)
-
-| Icono | Nombre | Propósito |
-|-------|--------|----------|
-| 📝 | **Texto Alt Inteligente** | Evalúa calidad del alt (puntuación 0-100) |
-| 🏗️ | **Estructura Semántica** | Valida nav, main, section, article, etc. |
-| 📋 | **Auditoría Formularios** | Valida labels, fieldsets, accesibilidad |
-| 🎨 | **Ratios de Color Avanzado** | Análisis detallado WCAG con tabla comparativa |
-
----
-
-## 🚀 Inicio Rápido
-
-### 1️⃣ Abre la Página de Instalación
-
-Abre [**Bookmarklets/page/index.html**](./Bookmarklets/page/index.html) en tu navegador.
-
-### 2️⃣ Copia un Bookmarklet
-
-Selecciona el bookmarklet que necesites y cópialo al portapapeles.
-
-### 3️⃣ Crea un Marcador en tu Navegador
-
-#### Chrome / Edge / Firefox:
-1. Abre **Marcadores** (`Ctrl+Shift+B`)
-2. Click derecho → **Nuevo Marcador**
-3. **Nombre:** "A11y — Headings" (elige el nombre que prefieras)
-4. **URL:** Pega el código copiado
-5. ✓ ¡Listo!
-
-#### Safari (macOS):
-1. Abre **Marcadores** (`Cmd+Option+B`)
-2. Click derecho → **Nuevo Marcador**
-3. Sigue los pasos anteriores
-
-### 4️⃣ Usa el Bookmarklet
-
-1. Ve a cualquier página web
-2. Haz clic en tu bookmarklet desde la barra de marcadores
-3. Un panel flotante mostrará los resultados
-4. Exporta los datos si necesitas (formato JSON)
-
----
-
-## 📁 Estructura del Proyecto
+## Estructura del proyecto
 
 ```
-Bookmarklets_a11y_vibe/
-├── Bookmarklets/                    ← Suite de herramientas
-│   ├── src/
-│   │   ├── lib.js                   ← Librería compartida (core)
-│   │   ├── styles.css               ← Estilos accesibles del panel
-│   │   ├── headings.js              ← Bookmarklet: Validar Headings
-│   │   ├── images.js                ← Bookmarklet: Validar Imágenes
-│   │   ├── contrast.js              ← Bookmarklet: Validar Contraste
-│   │   ├── axe-core.js              ← Bookmarklet: Auditoría Axe-Core
-│   │   ├── alt-text.js              ← Bookmarklet: Evaluar Alt Text
-│   │   ├── semantics.js             ← Bookmarklet: Estructura Semántica
-│   │   ├── forms.js                 ← Bookmarklet: Formularios
-│   │   ├── color-ratios.js          ← Bookmarklet: Ratios de Color
-│   │   ├── QUICK_REFERENCE.md       ← Referencia técnica rápida
-│   │   └── Agents.md                ← Guía de agentes
-│   ├── page/
-│   │   ├── index.html               ← Página de instalación
-│   │   └── agents.md                ← Documentación de agentes
-│   └── README.md                    ← Detalles técnicos
-├── .agents/
-│   └── skills/                      ← Skills para IA/Agentes
-│       ├── copywriting/
-│       ├── find-skills/
-│       ├── frontend-design/
-│       ├── intopia-web-accessibility/
-│       └── marketing-ideas/
-├── Agents.md                        ← Información general
-├── README.md                        ← Este archivo
-├── LICENSE                          ← Licencia del proyecto
-└── skills-lock.json                 ← Lock de dependencias
+bookmarklets/
++-- build.js
++-- src/
+�   +-- shared/
+�   �   +-- panel.js
+�   �   +-- panel.css
+�   �   +-- overlay.js
+�   �   +-- overlay.css
+�   �   +-- output.js
+�   +-- headings/
+�   +-- axe/
+�   +-- images/
+�   +-- contrast/
+�   +-- links/
+�   +-- forms/
+�   +-- landmarks/
++-- page/
+    +-- index.html
+    +-- page.css
+    +-- page.js
+    +-- bookmarklets.json
+    +-- bookmarklets-data.js
 ```
 
----
+## Instalaci�n
 
-## 💻 Casos de Uso
+1. Clona el repositorio:
 
-### 👨‍💼 Para Auditores de Accesibilidad
+   ```sh
+   git clone https://github.com/PahCiencia/Bookmarklets_a11y_vibe.git
+   cd Bookmarklets_a11y_vibe
+   ```
 
-```workflow
-1. Abrir página a auditar
-2. Ejecutar bookmarklet AUDITOR
-3. Revisar panel flotante
-4. Exportar JSON para reporte
-5. Documentar con screenshots
-```
+2. Compila los bookmarklets:
 
-**Ventaja:** Auditoría rápida sin herramientas complejas.
+   ```sh
+   cd bookmarklets
+   node build.js
+   ```
 
-### 👨‍💻 Para Desarrolladores
+3. Abre `page/index.html` en tu navegador.
 
-```workflow
-1. Cambiar código de componente
-2. Abrir en navegador de desarrollo
-3. Ejecutar bookmarklet en la página
-4. Revisar problemas encontrados
-5. Iterar hasta que no haya issues
-```
+4. Arrastra cada bookmarklet a tu barra de favoritos.
 
-**Ventaja:** Validación en tiempo real antes de deploy.
+## Uso
 
-### 🤖 Para Usuarios de IA (ChatGPT, Claude, etc.)
+1. Navega a cualquier p�gina web
+2. Haz clic en el bookmarklet que quieras ejecutar
+3. Aparecer� un **panel lateral** con los resultados
+4. Haz clic en **"Copiar JSON"** para obtener el informe completo
 
-```workflow
-1. Ejecutar bookmarklet en página web
-2. Copiar salida JSON
-3. Pegar en prompt del LLM
-4. Recibir recomendaciones específicas
-5. Aplicar sugerencias
-```
+El JSON se puede pegar directamente en un LLM (ChatGPT, Claude, etc.) para obtener recomendaciones de correcci�n.
 
-**Ventaja:** Automatizar análisis y recomendaciones.
+## Compatibilidad
 
----
+| Navegador | Soporte |
+|-----------|---------|
+| Chrome/Edge | ? 90+ |
+| Firefox | ? 88+ |
+| Safari | ? 14+ |
 
-## 🌐 Compatibilidad de Navegadores
+## Recursos
 
-| Navegador | Soporte | Nota |
-|-----------|---------|------|
-| **Chrome** | ✅ Completo | Recomendado — mejor rendimiento |
-| **Edge** | ✅ Completo | Motor Chromium, funciona igual |
-| **Firefox** | ✅ Completo | Panel flotante optimizado |
-| **Safari** | ✅ Completo | macOS e iOS compatible |
-| **Opera** | ✅ Completo | Compatible con Chrome |
+- [WCAG 2.1](https://www.w3.org/WAI/standards-guidelines/wcag/) � Pautas de Accesibilidad Web
+- [Axe DevTools](https://www.deque.com/axe/devtools/) � Motor de auditor�a WCAG
+- [MDN: ARIA](https://developer.mozilla.org/es/docs/Web/Accessibility/ARIA) � Atributos accesibles
 
----
+## Licencia
 
-## 📊 Formato de Salida
+MIT
 
-Cada bookmarklet genera dos formatos:
+## Contacto
 
-### 1. Panel Visual Accesible
-- Interfaz interactiva con resultados
-- Navegable completamente por teclado (Tab, Enter, Escape)
-- Links directos a WCAG 2.2
-- Sin dependencias externas
-
-### 2. JSON Exportable
-- Estructura de datos completa
-- Optimizado para procesamiento con IA
-- Incluye timestamp, URL y metadatos
-- Descargable en archivo
-
-**Ejemplo de salida:**
-```json
-{
-  "tool": "headings-auditor",
-  "timestamp": "2026-05-31T14:23:00Z",
-  "pageUrl": "https://ejemplo.com",
-  "summary": {
-    "total_headings": 8,
-    "issues": 2,
-    "severity": "warning"
-  },
-  "results": [
-    {
-      "tag": "h1",
-      "text": "Título Principal",
-      "status": "pass"
-    },
-    {
-      "tag": "h3",
-      "text": "Subsección",
-      "status": "fail",
-      "issue": "Saltó nivel (no hay h2)"
-    }
-  ]
-}
-```
+Si tienes preguntas o necesitas ayuda, puedes:
+- Abrir un issue en este repositorio o escribir un comentario en la lecci�n del curso.
+- Contactar al equipo de weAAAre a trav�s de hola@weaaare.com
 
 ---
-
-## 📚 Estándares de Referencia
-
-Este proyecto se basa en estándares internacionales:
-
-- **[WCAG 2.2](https://www.w3.org/WAI/WCAG22/quickref/)** — Web Content Accessibility Guidelines
-- **[Axe-Core](https://github.com/dequelabs/axe-core)** — Motor de auditoría automática
-- **[ARIA](https://www.w3.org/TR/wai-aria-1.2/)** — Accessible Rich Internet Applications
-- **HTML Semántico** — Estructura correcta de documentos
-
----
-
-## 🎓 Recursos de Aprendizaje
-
-- [WCAG 2.2 en Español](https://www.w3.org/WAI/WCAG22/quickref/es)
-- [Introducción a Accesibilidad Web](https://www.w3.org/WAI/fundamentals/accessibility-intro/)
-- [Testing Manual de Accesibilidad](https://www.w3.org/WAI/test-evaluate/)
-- [WebAIM — Recursos de Accesibilidad](https://webaim.org/)
-- [A11y Project](https://www.a11yproject.com/)
-
----
-
-## 🔧 Requisitos Técnicos
-
-- **Navegador moderno** (2023+)
-- **JavaScript habilitado**
-- **Sin extensiones bloqueantes**
-- **Acceso DOM de lectura** en la página
-
-**No requiere:**
-- Instalación
-- Cuenta o login
-- Conexión a internet
-- Dependencias externas
-
----
-
-## ⚖️ Licencia
-
-- **Axe-Core** — Mozilla Public License 2.0
-- **Bookmarklets propios** — Acceso libre para auditoría y educación
-- **Documentación** — CC BY 4.0
-
----
-
-## 👥 Contribución y Mejoras
-
-Este proyecto está diseñado pensando en:
-
-- **Accesibilidad primero** — Las herramientas deben ser accesibles
-- **Documentación clara** — Sin tecnicismos innecesarios
-- **Compatible con IA** — Exportación JSON para LLMs
-- **Mejora continua** — Actualizaciones basadas en WCAG
-
----
-
-## 📖 Documentación Técnica
-
-- **[Agents.md](./Agents.md)** — Información detallada para desarrolladores
-- **[Bookmarklets/README.md](./Bookmarklets/README.md)** — Detalles técnicos de cada herramienta
-- **[Quick Reference](./Bookmarklets/src/QUICK_REFERENCE.md)** — Referencia técnica rápida
-
----
-
-## 🎯 Mejoras Planificadas
-
-- [ ] Integración con GitHub Pages
-- [ ] API REST para auditoría remota
-- [ ] Extensión oficial Chrome/Firefox
-- [ ] Dashboard de auditorías históricas
-- [ ] Soporte para múltiples idiomas
-- [ ] Integración con CI/CD
-
----
-
-## 📞 Contacto y Recursos
-
-**Parte del programa:** Desarrollo Accesible con IA  
-**Organización:** WeAAAre  
-**Repositorio:** [github.com/PahCiencia/Bookmarklets_a11y_vibe](https://github.com/PahCiencia/Bookmarklets_a11y_vibe)
-
----
-
-## 📈 Estadísticas del Proyecto
-
-- **8 Bookmarklets** funcionales
-- **100% Accesible** (WCAG 2.2 AAA)
-- **0 Dependencias** externas
-- **69 Archivos** en repositorio
-- **10KB+ Código** optimizado
-
----
-
-<div align="center">
-
-**Última actualización:** 31 de mayo de 2026  
-**Estado:** ✅ Estable y listo para usar
-
-> 🎨 **"La accesibilidad no es una característica, es un derecho."**
-
-</div>
+Desarrollado con ?? por el equipo de weAARe
