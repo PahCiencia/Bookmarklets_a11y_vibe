@@ -2,11 +2,11 @@
 
 Repositorio del curso de desarrollo accesible con IA en la plataforma [weAAAre](https://weaaare.com).
 
-## Descripción
+## DescripciÃ³n
 
-Kit de **bookmarklets** para auditar la accesibilidad web ([WCAG 2.1](https://www.w3.org/WAI/standards-guidelines/wcag/)) de cualquier página en tiempo real.
+Kit de **bookmarklets** para auditar la accesibilidad web ([WCAG 2.1](https://www.w3.org/WAI/standards-guidelines/wcag/)) de cualquier pÃ¡gina en tiempo real.
 
-Ejecuta los análisis directamente desde tu navegador y obtén:
+Ejecuta los anÃ¡lisis directamente desde tu navegador y obtÃ©n:
 
 - **Panel visual** con errores, avisos y verificaciones correctas
 - **JSON exportable** para compartir resultados con un LLM
@@ -14,13 +14,13 @@ Ejecuta los análisis directamente desde tu navegador y obtén:
 
 Cada bookmarklet se especializa en un aspecto diferente de la accesibilidad:
 
-| Herramienta | Qué analiza |
+| Herramienta | QuÃ© analiza |
 |------------|-----------|
-| **Headings** | Jerarquía h1-h6, niveles saltados, headings vacíos, múltiples H1 |
-| **Axe-core** | Auditoría completa WCAG 2.1 usando el motor de Deque |
-| **Imágenes** | Alt text ausente/vacío/largo, SVGs sin nombre accesible |
+| **Headings** | JerarquÃ­a h1-h6, niveles saltados, headings vacÃ­os, mÃºltiples H1 |
+| **Axe-core** | AuditorÃ­a completa WCAG 2.1 usando el motor de Deque |
+| **ImÃ¡genes** | Alt text ausente/vacÃ­o/largo, SVGs sin nombre accesible |
 | **Contraste** | Ratio de colores (AA 4.5:1, AAA 7:1) |
-| **Links** | Texto genérico, enlaces sin destino, nuevas pestañas sin aviso |
+| **Links** | Texto genÃ©rico, enlaces sin destino, nuevas pestaÃ±as sin aviso |
 | **Formularios** | Labels asociados, fieldsets, autocomplete, botones sin texto |
 | **Landmarks** | Regiones ARIA (main, nav, header), duplicados sin label |
 
@@ -30,19 +30,19 @@ Cada bookmarklet se especializa en un aspecto diferente de la accesibilidad:
 bookmarklets/
 +-- build.js
 +-- src/
-¦   +-- shared/
-¦   ¦   +-- panel.js
-¦   ¦   +-- panel.css
-¦   ¦   +-- overlay.js
-¦   ¦   +-- overlay.css
-¦   ¦   +-- output.js
-¦   +-- headings/
-¦   +-- axe/
-¦   +-- images/
-¦   +-- contrast/
-¦   +-- links/
-¦   +-- forms/
-¦   +-- landmarks/
+Â¦   +-- shared/
+Â¦   Â¦   +-- panel.js
+Â¦   Â¦   +-- panel.css
+Â¦   Â¦   +-- overlay.js
+Â¦   Â¦   +-- overlay.css
+Â¦   Â¦   +-- output.js
+Â¦   +-- headings/
+Â¦   +-- axe/
+Â¦   +-- images/
+Â¦   +-- contrast/
+Â¦   +-- links/
+Â¦   +-- forms/
+Â¦   +-- landmarks/
 +-- page/
     +-- index.html
     +-- page.css
@@ -51,7 +51,7 @@ bookmarklets/
     +-- bookmarklets-data.js
 ```
 
-## Instalación
+## InstalaciÃ³n
 
 1. Clona el repositorio:
 
@@ -73,12 +73,12 @@ bookmarklets/
 
 ## Uso
 
-1. Navega a cualquier página web
+1. Navega a cualquier pÃ¡gina web
 2. Haz clic en el bookmarklet que quieras ejecutar
-3. Aparecerá un **panel lateral** con los resultados
+3. AparecerÃ¡ un **panel lateral** con los resultados
 4. Haz clic en **"Copiar JSON"** para obtener el informe completo
 
-El JSON se puede pegar directamente en un LLM (ChatGPT, Claude, etc.) para obtener recomendaciones de corrección.
+El JSON se puede pegar directamente en un LLM (ChatGPT, Claude, etc.) para obtener recomendaciones de correcciÃ³n.
 
 ## Compatibilidad
 
@@ -90,9 +90,9 @@ El JSON se puede pegar directamente en un LLM (ChatGPT, Claude, etc.) para obten
 
 ## Recursos
 
-- [WCAG 2.1](https://www.w3.org/WAI/standards-guidelines/wcag/) — Pautas de Accesibilidad Web
-- [Axe DevTools](https://www.deque.com/axe/devtools/) — Motor de auditoría WCAG
-- [MDN: ARIA](https://developer.mozilla.org/es/docs/Web/Accessibility/ARIA) — Atributos accesibles
+- [WCAG 2.1](https://www.w3.org/WAI/standards-guidelines/wcag/) â€” Pautas de Accesibilidad Web
+- [Axe DevTools](https://www.deque.com/axe/devtools/) â€” Motor de auditorÃ­a WCAG
+- [MDN: ARIA](https://developer.mozilla.org/es/docs/Web/Accessibility/ARIA) â€” Atributos accesibles
 
 ## Licencia
 
@@ -100,9 +100,9 @@ MIT
 
 ## Contacto
 
-Si tienes preguntas o necesitas ayuda, puedes:
-- Abrir un issue en este repositorio o escribir un comentario en la lección del curso.
-- Contactar al equipo de weAAAre a través de hola@weaaare.com
+Si tienes preguntas o necesitas ayuda, puedes preguntar al equipo de weAAAre:
+- Abrir un issue en este repositorio.
+- Contactar al equipo de weAAAre a travÃ©s de hola@weaaare.com
 
 ---
-Desarrollado con ?? por el equipo de weAARe
+Desarrollado con ðŸ‘€ por PaH!Ciencia, en el curso "Desarrollo accesible con IA" de WeAAAre
